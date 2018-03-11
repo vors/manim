@@ -67,7 +67,7 @@ DEGREES = TAU/360
 
 # Change this to point to where you want 
 # animation files to output
-MEDIA_DIR = os.path.join(os.path.expanduser('~'), "Dropbox (3Blue1Brown)/3Blue1Brown Team Folder")
+MEDIA_DIR = 'out'
 
 ANIMATIONS_DIR = os.path.join(MEDIA_DIR, "animations")
 RASTER_IMAGE_DIR = os.path.join(MEDIA_DIR, "designs", "raster_images")
