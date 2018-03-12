@@ -1,0 +1,29 @@
+init:
+    - git config --global core.autocrlf true
+
+install:
+    - python --version
+    - pip --version
+    - pip install -r requirements.txt
+
+build: off
+
+test_script:
+    - python extract_scene.py example_scenes.py SquareToCircle -p
+
+on_finish:
+    - ps: |
+        $ErrorActionPreference = 'Stop'
+        try {
+            $stagingDirectory = (Resolve-Path ..).Path
+            $zipFile = Join-Path $stagingDirectory "platyPS-$($env:APPVEYOR_BUILD_VERSION).zip"
+            Add-Type -assemblyname System.IO.Compression.FileSystem
+            [System.IO.Compression.ZipFile]::CreateFromDirectory("$pwd\out", $zipFile)
+            @(
+                # You can add other artifacts here
+                (ls $zipFile),
+            # flattering
+            ) | % {$_} | ? {$_} |% { Push-AppveyorArtifact $_.FullName }
+        } catch {
+            Write-Host -Foreground Red $_
+        }
